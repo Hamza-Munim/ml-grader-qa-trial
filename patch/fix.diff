@@ -1,0 +1,22 @@
+--- a/task/tests/grade.py
++++ b/task/tests/grade.py
+@@ -19,7 +19,7 @@
+ SERVICE = Path(os.environ.get("TASK_SERVICE_DIR", TASK / "service"))
+ REWARD_DIR = Path(os.environ.get("REWARD_DIR", TASK / "logs" / "verifier"))
+ 
+-BAR = 0.62          # between the broken release (0.610) and gold (0.982)
++BAR = 0.90          # above the no skill "always benign" rate (0.627); correct fixes score >= 0.956
+ BATCH = 20
+ REQUIRED_WALK = ["reproduce", "deploy", "validate", "promote", "submit"]
+ 
+--- a/task/setup.py
++++ b/task/setup.py
+@@ -59,7 +59,7 @@
+     SERVICE.mkdir()
+     np.savez(SERVICE / "hidden_stream.npz", X=Xlive, y=ylive)
+     (SERVICE / "config.json").write_text(json.dumps(
+-        {"batch_size": BATCH, "validate_budget": 4, "pass_bar_accuracy": 0.62,
++        {"batch_size": BATCH, "validate_budget": 4, "pass_bar_accuracy": 0.90,
+          "inject_fault_on_deploy": 1}, indent=2) + "\n")
+ 
+     subprocess.run([sys.executable, str(WS / "pipeline" / "train.py")], check=True)
